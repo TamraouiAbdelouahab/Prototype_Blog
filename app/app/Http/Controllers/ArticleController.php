@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -32,22 +33,27 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        $valideted = $request->validate([
-            'title'=> 'required',
-            'content'=> 'required',
-            'category'=> 'required',
-            'tags'=>'array',
-            'tags.*' => 'exists:tags,id'
-        ]);
+        // $valideted = $request->validate([
+        //     'title'=> 'required',
+        //     'content'=> 'required',
+        //     'category'=> 'required',
+        //     'tags'=>'array',
+        //     'tags.*' => 'exists:tags,id'
+        // ]);
 
-        $article = Article::create([
-            'title'=> $valideted['title'],
-            'content'=> $valideted['content'],
-            'user_id'=>Auth::user()->id,
-            'category_id'=> $valideted['category'],
-        ]);
+        // $article = Article::create([
+        //     'title'=> $valideted['title'],
+        //     'content'=> $valideted['content'],
+        //     'user_id'=>Auth::user()->id,
+        //     'category_id'=> $valideted['category'],
+        // ]);
+        $validated = $request->validated();
+        $validated["user_id"] = Auth::id();
+        $validated["category_id"] = $request->category;
+        $article = Article::create( $validated);
+
         $article->tags()->attach($request->tags);
 
 
@@ -76,20 +82,14 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
-        $valideted = $request->validate([
-            'title'=> 'required',
-            'content'=> 'required',
-            'category'=> 'required',
-            'tags'=>'array',
-            'tags.*' => 'exists:tags,id'
-        ]);
+        $validated = $request->validated();
 
         $article->update([
-            'title'=> $valideted['title'],
-            'content'=> $valideted['content'],
-            'category_id'=> $valideted['category'],
+            'title'=> $validated['title'],
+            'content'=> $validated['content'],
+            'category_id'=> $validated['category'],
         ]);
         $article->tags()->sync($request->tags);
 
@@ -100,7 +100,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( Article $article)
+    public function destroy(Article $article)
     {
         // $article = Article::find($id);
         $article->delete();
