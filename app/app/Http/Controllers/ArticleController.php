@@ -71,6 +71,7 @@ class ArticleController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
      */
     public function edit(Article $article)
     {
@@ -94,7 +95,6 @@ class ArticleController extends Controller
         $article->tags()->sync($request->tags);
 
         return redirect()->route('article.index')->with('success', 'Article créé avec succès.');
-
     }
 
     /**
@@ -103,6 +103,7 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         // $article = Article::find($id);
+        $this->authorize('delete', $article);
         $article->delete();
         return redirect()->route('article.index')->with('success', 'Article supprimé avec succès.');
     }
