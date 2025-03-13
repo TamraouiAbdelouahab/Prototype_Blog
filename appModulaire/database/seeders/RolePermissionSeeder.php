@@ -22,5 +22,6 @@ class RolePermissionSeeder extends Seeder
 
         Role::findByName('admin')->givePermissionTo(Permission::all());
         Role::findByName('user')->givePermissionTo(['view public']);
+        
     }
 }
