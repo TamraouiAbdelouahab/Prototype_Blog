@@ -4,8 +4,8 @@ namespace Modules\Blog\Controllers;
 
 
 use Modules\Core\Controllers\Controller;
-use App\Models\Article;
-use App\Models\Comment;
+use Modules\Blog\Models\Article;
+use Modules\Blog\Models\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -16,7 +16,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = Comment::All();
-        return view("admin.comment.index", compact("comments"));
+        return view("Blog::admin.comment.index", compact("comments"));
     }
 
     /**
@@ -25,7 +25,7 @@ class CommentController extends Controller
     public function indexByArticle(Article $article)
     {
         $comments = $article->comments;
-        return view("admin.comment.indexByArticle", compact("comments", "article"));
+        return view("Blog::admin.comment.indexByArticle", compact("comments", "article"));
     }
 
     /**
@@ -41,7 +41,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        return view("admin.comment.show", compact("comment"));
+        return view("Blog::admin.comment.show", compact("comment"));
     }
 
     /**
@@ -49,7 +49,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        return view("admin.comment.edit", compact("comment"));
+        return view("Blog::admin.comment.edit", compact("comment"));
     }
 
     /**
@@ -66,7 +66,7 @@ class CommentController extends Controller
         ]);
 
 
-        return redirect()->route('comment.show',$comment)->with('success', 'Commentaire modifié avec succès.');
+        return redirect()->route('Blog::comment.show',$comment)->with('success', 'Commentaire modifié avec succès.');
     }
 
     /**
@@ -90,7 +90,7 @@ class CommentController extends Controller
 
         // Redirect back with a success message
         return redirect()
-            ->route('public.public.show', $article->id)
+            ->route('Blog::public.public.show', $article->id)
             ->with('success', 'Your comment has been added!');
     }
 
@@ -102,7 +102,7 @@ class CommentController extends Controller
         $comment->delete();
 
         return redirect()
-            ->route('comment.index')
+            ->route('Blog::comment.index')
             ->with('success', 'Commentaire supprimé avec succès.');
     }
 
@@ -112,7 +112,7 @@ class CommentController extends Controller
         $comment->delete();
 
         return redirect()
-            ->route('comment.indexByArticle', $article)
+            ->route('Blog::comment.indexByArticle', $article)
             ->with('success', 'Commentaire supprimé avec succès.');
     }
 }

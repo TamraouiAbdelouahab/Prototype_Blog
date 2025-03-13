@@ -4,7 +4,7 @@ namespace Modules\Blog\Controllers;
 
 
 use Modules\Core\Controllers\Controller;
-use App\Models\Category;
+use Modules\Blog\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(4);
-        return view('admin.category.index',compact('categories'));
+        return view('Blog::admin.category.index',compact('categories'));
     }
 
     /**
@@ -23,7 +23,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        return view('Blog::admin.category.create');
     }
 
     /**
@@ -41,7 +41,7 @@ class CategoryController extends Controller
             'slug'=> $validated['slug']
         ]);
 
-        return redirect()->route('category.index')->with('success', 'Catégorie créé avec succès.');
+        return redirect()->route('Blog::category.index')->with('success', 'Catégorie créé avec succès.');
     }
 
     /**
@@ -49,7 +49,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('admin.category.show',compact('category'));
+        return view('Blog::admin.category.show',compact('category'));
     }
 
     /**
@@ -58,7 +58,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
 
-        return view('admin.category.edit',compact('category'));
+        return view('Blog::admin.category.edit',compact('category'));
     }
 
     /**
@@ -76,7 +76,7 @@ class CategoryController extends Controller
             'slug'=> $validated['slug']
         ]);
 
-        return redirect()->route('category.index');
+        return redirect()->route('Blog::category.index');
     }
 
     /**
@@ -85,6 +85,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('category.index');
+        return redirect()->route('Blog::category.index');
     }
 }

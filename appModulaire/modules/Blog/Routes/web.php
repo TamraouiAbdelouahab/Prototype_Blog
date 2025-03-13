@@ -3,25 +3,22 @@
 
 use Modules\Blog\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use Modules\Blog\Controllers\ArticleController;
 use Modules\Blog\Controllers\CategoryController;
 use Modules\Blog\Controllers\CommentController;
 use Modules\Blog\Controllers\TagController;
-use Modules\Blog\Controllers\UserController;
+use Modules\Blog\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 
 
-Route::get('/', function () {
-    return view('Blog::auth.login');
-});
 // Route::get('/', function () {
 //     return view('Blog::auth.login');
 // })->middleware('guest');
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->name('dashboard');
 
 Route::get('articles/{article}/comments', [CommentController::class, 'indexByArticle'])->name('comment.indexByArticle');
 Route::delete('articles/comment/{comment}', [CommentController::class, 'destroyByArticle'])->name('comment.destroyByArticle');
@@ -34,12 +31,12 @@ Route::resource('/dashboard/category',CategoryController::class);
 Route::resource('/dashboard/tag',TagController::class);
 
 
-Route::get('/home', [Modules\Blog\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
-Route::get('/public', [Modules\Blog\Controllers\HomeController::class, 'publicIndex'])->name('public.public.index');
-Route::get('/public/article/{id}', [Modules\Blog\Controllers\HomeController::class, 'publicShow'])->name('public.public.show');
-Route::post('/articles/{id}/comments', [Modules\Blog\Controllers\CommentController::class, 'store'])->name('public.article.comments.store');
+Route::get('/public', [HomeController::class, 'publicIndex'])->name('public.public.index');
+Route::get('/public/article/{id}', [HomeController::class, 'publicShow'])->name('public.public.show');
+Route::post('/articles/{id}/comments', [CommentController::class, 'store'])->name('public.article.comments.store');
 
 
 // Admin Routes with 'admin' role middleware

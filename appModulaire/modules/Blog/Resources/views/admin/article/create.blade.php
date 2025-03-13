@@ -16,7 +16,7 @@
             <div class="card-header">
                 <h3 class="card-title">Ajouter un Article</h3>
             </div>
-            
+
             <!-- /.card-header -->
             <!-- form start -->
             <form action="{{route('article.store')}}" method="POST">
@@ -26,11 +26,17 @@
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Entrez le titre">
+                        @error('title')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- Champ Description -->
                     <div class="form-group">
                         <label for="description">Content</label>
                         <textarea name="content" class="form-control" id="description" rows="3" placeholder="Entrez la description"></textarea>
+                        @error('content')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Champ Catégorie -->
@@ -43,6 +49,9 @@
                             @endforeach
 
                         </select>
+                        @error('category')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Champ Tags -->
@@ -54,6 +63,9 @@
                             @endforeach
                         </select>
                     </div>
+                    @error('tags')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
                 <!-- /.card-body -->
 

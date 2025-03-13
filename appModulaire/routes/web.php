@@ -49,6 +49,12 @@
 
 // });
 
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
+
+Route::get('/', function () {
+    return view('auth.login');
+});
 
 // Route::get('change', [LanguageController::class, 'change'])->name("lang.change");

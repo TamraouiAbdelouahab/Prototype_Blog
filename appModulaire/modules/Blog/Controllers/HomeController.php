@@ -5,8 +5,8 @@ namespace Modules\Blog\Controllers;
 
 use Modules\Core\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Article;
-use App\Models\Category;
+use Modules\Blog\Models\Article;
+use Modules\Blog\Models\Category;
 
 class HomeController extends Controller
 {
@@ -47,7 +47,7 @@ class HomeController extends Controller
 
         $articles = $articlesQuery->paginate(6); // Paginate the results
 
-        return view('public.articles.index', compact('articles', 'categories', 'search', 'category'));
+        return view('Blog::public.articles.index', compact('articles', 'categories', 'search', 'category'));
     }
 
     /**
@@ -58,7 +58,7 @@ class HomeController extends Controller
     public function publicShow($id)
     {
         $article = Article::findOrFail($id);
-        return view('public.articles.show', compact('article'));
+        return view('Blog::public.articles.show', compact('article'));
     }
 
     /**
@@ -68,6 +68,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('Blog::home');
     }
 }

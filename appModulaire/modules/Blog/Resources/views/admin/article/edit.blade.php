@@ -14,11 +14,17 @@
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" name="title" class="form-control" value="{{ $article->title }}" id="title" placeholder="Entrez le titre">
+                        @error('title')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- Champ Description -->
                     <div class="form-group">
                         <label for="description">Content</label>
                         <textarea name="content" class="form-control"  id="description" rows="3" placeholder="Entrez la description">{{ $article->content }}</textarea>
+                        @error('content')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Champ Catégorie -->
@@ -31,7 +37,9 @@
                                     @selected($category->id == $article->category_id)
                                 >{{$category->name}}</option>
                             @endforeach
-
+                            @error('category')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </select>
                     </div>
 
@@ -42,6 +50,9 @@
                             <option value="{{ $tag->id }}"
                             @selected($article->tags->contains($tag->id))>{{ $tag->name }}</option>
                             @endforeach
+                            @error('tags[]')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </select>
                     </div>
                 </div>

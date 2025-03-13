@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Modules\Blog\Models\User;
 use Modules\Blog\Database\Seeders\DatabaseSeederBlog;
 use Illuminate\Database\Seeder;
 

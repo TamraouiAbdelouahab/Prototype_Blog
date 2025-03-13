@@ -3,6 +3,7 @@
 namespace Modules\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Article extends Model
 {

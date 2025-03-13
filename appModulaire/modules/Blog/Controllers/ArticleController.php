@@ -3,22 +3,34 @@
 namespace Modules\Blog\Controllers;
 
 use Modules\Core\Controllers\Controller;
-use App\Http\Requests\ArticleRequest;
-use App\Models\Article;
-use App\Models\Category;
-use App\Models\Tag;
+use Modules\Blog\app\Requests\ArticleRequest;
+use Modules\Blog\Models\Article;
 use Illuminate\Support\Facades\Auth;
-
+use Modules\Blog\Services\ArticleService;
+use Modules\Blog\Services\TagService;
+use Modules\Blog\Services\CategoryService;
 
 class ArticleController extends Controller
 {
+
+    protected $articleService;
+    protected $tagService;
+    protected $categoryService;
+
+    public function __construct(ArticleService $articleService,TagService $tagService, CategoryService $categoryService)
+    {
+        $this->articleService = $articleService;
+        $this->tagService = $tagService;
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $articles = Article::paginate(4);
-        return view('admin.article.index', compact('articles'));
+        $articles = $this->articleService->paginate(4);
+        return view('Blog::admin.article.index', compact('articles'));
     }
 
     /**
@@ -26,9 +38,9 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('admin.article.create', compact('categories','tags'));
+        $categories = $this->categoryService->getAll();
+        $tags = $this->tagService->getAll();
+        return view('Blog::admin.article.create', compact('categories','tags'));
     }
 
     /**
@@ -65,29 +77,40 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show(string $id)
     {
-        return view('admin.article.show',compact('article'));
+        $article = $this->articleService->find($id);
+        if(!$article){
+            abort(404);
+        }
+        return view('Blog::admin.article.show',compact('article'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      */
-    public function edit(Article $article)
+    public function edit(string $id)
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('admin.article.edit',compact('article','categories','tags'));
+        $article = $this->articleService->find($id);
+        if(!$article){
+            abort(404);
+        }
+        $categories = $this->categoryService->getAll();
+        $tags = $this->tagService->getAll();
+        return view('Blog::admin.article.edit',compact('article','categories','tags'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, string $id)
     {
         $validated = $request->validated();
-
+        $article = $this->articleService->find($id);
+        if(!$article){
+            abort(404);
+        }
         $article->update([
             'title'=> $validated['title'],
             'content'=> $validated['content'],
@@ -101,10 +124,14 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+    public function destroy(string $id)
     {
+        $article = $this->articleService->find($id);
+        if(!$article){
+            abort(404);
+        }
         // $article = Article::find($id);
-        $this->authorize('delete', $article);
+        // $this->authorize('delete', $article);
         $article->delete();
         return redirect()->route('article.index')->with('success', 'Article supprimé avec succès.');
     }

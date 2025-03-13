@@ -1,5 +1,5 @@
 
-@extends('Blog::layouts.admin')
+@extends('layouts.admin')
     @section('content')
         <div class="card card-primary">
             <div class="container-fluid">
@@ -16,7 +16,7 @@
             <div class="card-header">
                 <h3 class="card-title">Ajouter un tag</h3>
             </div>
-            
+
             <!-- /.card-header -->
             <!-- form start -->
             <form action="{{ Route('tag.store') }}" method="POST">

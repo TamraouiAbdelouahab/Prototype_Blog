@@ -1,4 +1,4 @@
-@extends('Blog::layouts.admin')
+@extends('layouts.admin')
     @section('content')
         <!-- Content Header -->
         <section class="content-header">
@@ -45,7 +45,7 @@
                     </div>
                     <h4>created at : </h4>
                     <p>{{ $user->created_at }}</p>
-                    
+
 
                 </div>
             </div>
