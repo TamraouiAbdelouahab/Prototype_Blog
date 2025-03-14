@@ -49,7 +49,6 @@ abstract class BaseService
         return null;
     }
 
-
     public function delete(int $id)
     {
         $record = $this->find($id);

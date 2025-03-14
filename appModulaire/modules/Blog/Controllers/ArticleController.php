@@ -2,12 +2,15 @@
 
 namespace Modules\Blog\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Core\Controllers\Controller;
 use Modules\Blog\app\Requests\ArticleRequest;
 use Illuminate\Support\Facades\Auth;
 use Modules\Blog\Services\ArticleService;
 use Modules\Blog\Services\TagService;
 use Modules\Blog\Services\CategoryService;
+use Modules\Blog\app\Imports\ArticleImport;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -133,5 +136,14 @@ class ArticleController extends Controller
         // $this->authorize('delete', $article);
         $article->delete();
         return redirect()->route('article.index')->with('success', 'Article supprimé avec succès.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+        Excel::import(new ArticleImport, $request->file('file'));
+        return back()->with('success', 'Importation réussie !');
     }
 }

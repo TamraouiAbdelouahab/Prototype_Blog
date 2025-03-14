@@ -20,6 +20,14 @@
                 <div class="row mb-2 justify-content-end">
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
+                            <form action="route('articles.import')" method="POST" class="mr-2 ">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Importer</button>
+                            </form>                            
+                            <form action="" method="POST" class="mr-2 ">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Export</button>
+                            </form>                            
                             <a href="{{ Route('article.create') }}" class="btn btn-primary btn-sm p-2 text-white"><i class="fas fa-plus"></i> {{ __('message.add article') }}</a>
                         </ol>
                     </div>

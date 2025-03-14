@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 // Route::get('/dashboard', function () {
 //     return view('admin.dashboard');
 // })->name('dashboard');
+Route::post('/import', [ArticleController::class, 'import'])->name('articles.import');
 
 Route::get('articles/{article}/comments', [CommentController::class, 'indexByArticle'])->name('comment.indexByArticle');
 Route::delete('articles/comment/{comment}', [CommentController::class, 'destroyByArticle'])->name('comment.destroyByArticle');
