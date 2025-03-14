@@ -3,18 +3,29 @@
 namespace Modules\Blog\Controllers;
 
 
+use Modules\Blog\Services\CategoryService;
 use Modules\Core\Controllers\Controller;
 use Modules\Blog\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
+
+
     /**
      * Display a listing of the resource.
     */
     public function index()
     {
-        $categories = Category::paginate(4);
+        // $categories = Category::paginate(4);
+        $categories = $this->categoryService->paginate(4);
         return view('Blog::admin.category.index',compact('categories'));
     }
 
@@ -35,7 +46,7 @@ class CategoryController extends Controller
             'title' => 'required|max:255',
             'slug'  => 'required|max:255',
         ]);
-
+        
         Category::create([
             'name' => $validated['title'],
             'slug'=> $validated['slug']
@@ -76,7 +87,7 @@ class CategoryController extends Controller
             'slug'=> $validated['slug']
         ]);
 
-        return redirect()->route('Blog::category.index');
+        return redirect()->route('category.index');
     }
 
     /**
@@ -85,6 +96,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('Blog::category.index');
+        return redirect()->route('category.index');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\Services;
+namespace Modules\Core\Service;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,7 +15,7 @@ abstract class BaseService
     }
 
 
-    public function getAll(): Collection
+    public function getAll()
     {
         return $this->model->all();
     }
@@ -27,19 +27,19 @@ abstract class BaseService
     }
 
 
-    public function find(int $id): ?Model
+    public function find(int $id)
     {
         return $this->model->find($id);
     }
 
 
-    public function create(array $data): Model
+    public function create(array $data)
     {
         return $this->model->create($data);
     }
 
 
-    public function update(int $id, array $data): ?Model
+    public function update(int $id, array $data)
     {
         $record = $this->find($id);
         if ($record) {
@@ -50,7 +50,7 @@ abstract class BaseService
     }
 
 
-    public function delete(int $id): bool
+    public function delete(int $id)
     {
         $record = $this->find($id);
         return $record ? $record->delete() : false;

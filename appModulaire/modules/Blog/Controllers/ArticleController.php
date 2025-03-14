@@ -4,7 +4,6 @@ namespace Modules\Blog\Controllers;
 
 use Modules\Core\Controllers\Controller;
 use Modules\Blog\app\Requests\ArticleRequest;
-use Modules\Blog\Models\Article;
 use Illuminate\Support\Facades\Auth;
 use Modules\Blog\Services\ArticleService;
 use Modules\Blog\Services\TagService;
@@ -65,7 +64,7 @@ class ArticleController extends Controller
         $validated = $request->validated();
         $validated["user_id"] = Auth::id();
         $validated["category_id"] = $request->category;
-        $article = Article::create( $validated);
+        $article = $this->articleService->create( $validated);
 
         $article->tags()->attach($request->tags);
 

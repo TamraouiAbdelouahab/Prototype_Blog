@@ -3,6 +3,7 @@
 namespace Modules\Blog\Services;
 
 use Modules\Blog\Models\Category;
+use Modules\Core\Service\BaseService;
 
 class CategoryService extends BaseService
 {

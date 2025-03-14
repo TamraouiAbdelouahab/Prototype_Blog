@@ -3,6 +3,7 @@
 namespace Modules\Blog\Services;
 
 use Modules\Blog\Models\Tag;
+use Modules\Core\Service\BaseService;
 
 class TagService extends BaseService
 {
