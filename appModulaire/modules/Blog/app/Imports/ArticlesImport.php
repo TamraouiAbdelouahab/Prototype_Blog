@@ -2,10 +2,10 @@
 
 namespace Modules\Blog\app\Imports;
 
-use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Modules\Blog\Models\Article;
 
-class ArticleImport implements ToModel
+class ArticlesImport implements ToModel
 {
     /**
     * @param array $row
@@ -14,10 +14,12 @@ class ArticleImport implements ToModel
     */
     public function model(array $row)
     {
-        return new User([
+        return new Article([
             'title'  => $row['title'],
             'content' => $row['content'],
-            'category' => $row['category']
+            'category' => $row['category'],
+            'user ' => $row['user'],
+            'created_at ' => $row['created_at']
         ]);
     }
 }

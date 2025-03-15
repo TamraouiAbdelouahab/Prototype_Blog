@@ -19,6 +19,11 @@
                 <div class="row mb-2 justify-content-end">
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
+                            <form action="{{route('categories.import')}}" method="POST" class="mr-2 ">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Importer</button>
+                            </form>
+                            <a href="{{ route('categories.export') }}"><button class="mr-2 btn btn-danger">Export</button></a>
                             <a href="{{ Route('category.create') }}" class="btn btn-primary btn-sm p-2 text-white"><i class="fas fa-plus"></i> Ajouter catégorie</a>
                         </ol>
                     </div>

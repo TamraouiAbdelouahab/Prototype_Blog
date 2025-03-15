@@ -6,6 +6,9 @@ namespace Modules\Blog\Controllers;
 use Modules\Core\Controllers\Controller;
 use Modules\Blog\Models\Tag;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Blog\app\Exports\TagsExport;
+use Modules\Blog\app\Imports\TagsImport;
 
 class TagController extends Controller
 {
@@ -14,7 +17,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::paginate(2);
+        $tags = Tag::paginate(4);
         // dd($tags->toSql());
         // dd( $tags->currentPage());
 
@@ -44,7 +47,7 @@ class TagController extends Controller
             'slug'=> $validated['slug']
         ]);
 
-        return redirect()->route('Blog::tag.index')->with('success', 'Catégorie créé avec succès.');
+        return redirect()->route('tag.index')->with('success', 'Catégorie créé avec succès.');
     }
 
     /**
@@ -80,7 +83,7 @@ class TagController extends Controller
             'slug'=> $validated['slug']
         ]);
 
-        return redirect()->route('Blog::tag.index');
+        return redirect()->route('tag.index');
     }
 
     /**
@@ -88,7 +91,21 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        $tag->delete();
-        return redirect()->route('Blog::tag.index');
+            $tag->delete();
+        return redirect()->route('tag.index');
+    }
+    public function import(Request $request)
+    {
+
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xlsmax:10240'
+        ]);
+
+        Excel::import(new TagsImport, $request->file('file'));
+        return back()->with('success', 'Importation réussie !');
+    }
+    public function export()
+    {
+        return Excel::download(new TagsExport, 'Tags.xlsx');
     }
 }

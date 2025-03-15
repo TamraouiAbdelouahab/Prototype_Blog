@@ -19,7 +19,16 @@ use App\Http\Controllers\UserController;
 // Route::get('/dashboard', function () {
 //     return view('admin.dashboard');
 // })->name('dashboard');
-Route::post('/import', [ArticleController::class, 'import'])->name('articles.import');
+
+// import & export Articles
+Route::get('/exportArticles', [ArticleController::class, 'export'])->name('articles.export');
+Route::post('/importArticles', [ArticleController::class, 'import'])->name('articles.import');
+// import & export Tags
+Route::get('/exportTags', [TagController::class, 'export'])->name('tags.export');
+Route::post('/importTags', [TagController::class, 'import'])->name('tags.import');
+// import & export Categories
+Route::get('/exportCategories', [CategoryController::class, 'export'])->name('categories.export');
+Route::post('/importCategoryies', [CategoryController::class, 'import'])->name('categories.import');
 
 Route::get('articles/{article}/comments', [CommentController::class, 'indexByArticle'])->name('comment.indexByArticle');
 Route::delete('articles/comment/{comment}', [CommentController::class, 'destroyByArticle'])->name('comment.destroyByArticle');

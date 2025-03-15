@@ -7,6 +7,9 @@ use Modules\Blog\Services\CategoryService;
 use Modules\Core\Controllers\Controller;
 use Modules\Blog\Models\Category;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Blog\app\Exports\CategoriesExport;
+use Modules\Blog\app\Imports\CategoriesImport;
 
 class CategoryController extends Controller
 {
@@ -46,7 +49,7 @@ class CategoryController extends Controller
             'title' => 'required|max:255',
             'slug'  => 'required|max:255',
         ]);
-        
+
         Category::create([
             'name' => $validated['title'],
             'slug'=> $validated['slug']
@@ -97,5 +100,18 @@ class CategoryController extends Controller
     {
         $category->delete();
         return redirect()->route('category.index');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+        Excel::import(new CategoriesImport, $request->file('file'));
+        return back()->with('success', 'Importation réussie !');
+    }
+    public function export()
+    {
+        return Excel::download(new CategoriesExport, 'Categories.xlsx');
     }
 }

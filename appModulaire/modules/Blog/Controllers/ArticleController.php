@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Blog\Services\ArticleService;
 use Modules\Blog\Services\TagService;
 use Modules\Blog\Services\CategoryService;
-use Modules\Blog\app\Imports\ArticleImport;
+use Modules\Blog\app\Imports\ArticlesImport;
 use Illuminate\Http\Request;
+use Modules\Blog\app\Exports\ArticlesExport;
 
 class ArticleController extends Controller
 {
@@ -140,10 +141,15 @@ class ArticleController extends Controller
 
     public function import(Request $request)
     {
+
         $request->validate([
             'file' => 'required|mimes:xlsx,csv'
         ]);
-        Excel::import(new ArticleImport, $request->file('file'));
+        Excel::import(new ArticlesImport, $request->file('file'));
         return back()->with('success', 'Importation réussie !');
+    }
+    public function export()
+    {
+        return Excel::download(new ArticlesExport, 'articles.xlsx');
     }
 }
