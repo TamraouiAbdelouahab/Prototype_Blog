@@ -23,13 +23,19 @@
                 <div class="card-body">
                     <!-- Champ Nom -->
                     <div class="form-group">
-                        <label for="title">Nom</label>
-                        <input type="text" name="title" class="form-control" id="title" placeholder="Entrez le Nom" value="{{ $tag->name }}">
+                        <label for="name">Nom</label>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Entrez le Nom" value="{{ $tag->name }}">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- Champ slug -->
                     <div class="form-group">
                         <label for="slug">Slug</label>
                         <input type="text" name="slug" class="form-control" id="slug" placeholder="Entrez le slug" value="{{ $tag->slug }}">
+                        @error('slug')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end">

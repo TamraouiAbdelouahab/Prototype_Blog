@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\Service;
+namespace Modules\Core\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseService
+abstract class BaseRepository implements BaseRepositoryInterface
 {
     protected Model $model;
 
@@ -18,12 +18,10 @@ abstract class BaseService
         return $this->model->all();
     }
 
-
-    public function paginate(int $perPage = 10)
+    public function paginate(int $perPage = 5)
     {
         return $this->model->paginate($perPage);
     }
-
 
     public function find(int $id)
     {
@@ -35,12 +33,10 @@ abstract class BaseService
         return $this->model->findOrFail($id);
     }
 
-
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-
 
     public function update(int $id, array $data)
     {
@@ -52,7 +48,7 @@ abstract class BaseService
         return null;
     }
 
-    public function delete(int $id)
+    public function delete(int $id): bool
     {
         $record = $this->find($id);
         return $record ? $record->delete() : false;

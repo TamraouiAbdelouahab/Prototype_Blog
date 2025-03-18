@@ -7,17 +7,23 @@ use Modules\Core\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Blog\Models\Article;
 use Modules\Blog\Models\Category;
+use Modules\Blog\Services\ArticleService;
+use Modules\Blog\Services\CategoryService;
 
 class HomeController extends Controller
 {
+    protected $articleService;
+    protected $categoryService;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ArticleService $articleService, CategoryService $categoryService)
     {
         $this->middleware('auth');
+        $this->articleService = $articleService;
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -30,7 +36,7 @@ class HomeController extends Controller
         $search = $request->query('search'); // Get the search query parameter
         $category = $request->query('category'); // Get the category query parameter
 
-        $categories = Category::all(); // Fetch all categories for the filter dropdown
+        $categories = $this->categoryService->getAll(); // Fetch all categories for the filter dropdown
 
         // Base query for articles
         $articlesQuery = Article::query();
@@ -57,7 +63,7 @@ class HomeController extends Controller
      */
     public function publicShow($id)
     {
-        $article = Article::findOrFail($id);
+        $article = $this->articleService->findOrFail((int) $id);
         return view('Blog::public.articles.show', compact('article'));
     }
 

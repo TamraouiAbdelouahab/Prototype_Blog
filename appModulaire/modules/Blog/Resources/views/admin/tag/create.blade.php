@@ -16,7 +16,6 @@
             <div class="card-header">
                 <h3 class="card-title">Ajouter un tag</h3>
             </div>
-            
             <!-- /.card-header -->
             <!-- form start -->
             <form action="{{ Route('tag.store') }}" method="POST">
@@ -24,13 +23,19 @@
                 <div class="card-body">
                     <!-- Champ Nom -->
                     <div class="form-group">
-                        <label for="title">Nom</label>
-                        <input type="text" name="title" class="form-control" id="title" placeholder="Entrez le Nom">
+                        <label for="name">Nom</label>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Entrez le Nom">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- Champ slug -->
                     <div class="form-group">
                         <label for="slug">Slug</label>
                         <input type="text" name="slug" class="form-control" id="slug" placeholder="Entrez le slug">
+                        @error('slug')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end">

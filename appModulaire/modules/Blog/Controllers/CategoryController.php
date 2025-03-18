@@ -2,14 +2,17 @@
 
 namespace Modules\Blog\Controllers;
 
-
-use Modules\Blog\Services\CategoryService;
 use Modules\Core\Controllers\Controller;
-use Modules\Blog\Models\Category;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+
+use Modules\Blog\app\Requests\CategoryRequest;
+use Modules\Blog\app\Requests\ImportRequest;
+
 use Modules\Blog\app\Exports\CategoriesExport;
 use Modules\Blog\app\Imports\CategoriesImport;
+
+use Modules\Blog\Services\CategoryService;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class CategoryController extends Controller
 {
@@ -19,15 +22,11 @@ class CategoryController extends Controller
     {
         $this->categoryService = $categoryService;
     }
-
-
-
     /**
      * Display a listing of the resource.
     */
     public function index()
     {
-        // $categories = Category::paginate(4);
         $categories = $this->categoryService->paginate(4);
         return view('Blog::admin.category.index',compact('categories'));
     }
@@ -43,70 +42,63 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'slug'  => 'required|max:255',
-        ]);
-
-        Category::create([
-            'name' => $validated['title'],
-            'slug'=> $validated['slug']
-        ]);
-
-        return redirect()->route('Blog::category.index')->with('success', 'Catégorie créé avec succès.');
+        $this->categoryService->create($request->validated());
+        return redirect()->route('category.index')->with('success', 'Catégorie créé avec succès.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(string $id)
     {
+        $category = $this->categoryService->find($id);
+        if(!$category){
+            abort(404);
+        }
         return view('Blog::admin.category.show',compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(string $id)
     {
-
+        $category = $this->categoryService->find($id);
+        if(!$category){
+            abort(404);
+        }
         return view('Blog::admin.category.edit',compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'slug'  => 'required|max:255',
-        ]);
-
-        $category->update([
-            'name' => $validated['title'],
-            'slug'=> $validated['slug']
-        ]);
-
+        $categoryUpdated = $this->categoryService->update($id,$request->validated());
+        if(!$categoryUpdated){
+            abort(404);
+        }
         return redirect()->route('category.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(string $id)
     {
-        $category->delete();
+        $categoryDeleted = $this->categoryService->delete($id);
+        if(!$categoryDeleted){
+            abort(404);
+        }
         return redirect()->route('category.index');
     }
 
-    public function import(Request $request)
+    
+    public function import(ImportRequest $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,csv'
-        ]);
         Excel::import(new CategoriesImport, $request->file('file'));
         return back()->with('success', 'Importation réussie !');
     }

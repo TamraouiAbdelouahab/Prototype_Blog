@@ -19,12 +19,32 @@
                 <div class="row mb-2 justify-content-end">
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <form action="{{route('categories.import')}}" method="POST" class="mr-2 ">
+                            
+                            <form action="{{route('categories.import')}}" method="POST" class="mr-2" enctype="multipart/form-data">
                                 @csrf
-                                <button type="submit" class="btn btn-success">Importer</button>
+                                <div class="btn btn-success py-0 px-2 d-flex align-items-center">
+                                    <label for="file" class="my-0 py-0" style="cursor: pointer; color: white">
+                                        <i class="fas fa-upload"></i>
+                                    </label>
+                                    <input class="d-none" type="file" name="file" id="file" accept=".xlsx, .csv" required>
+                                    <button type="submit" class="btn btn-s text-white border-0">
+                                        Import
+                                    </button>
+                                    @error('file')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </form>
-                            <a href="{{ route('categories.export') }}"><button class="mr-2 btn btn-danger">Export</button></a>
-                            <a href="{{ Route('category.create') }}" class="btn btn-primary btn-sm p-2 text-white"><i class="fas fa-plus"></i> Ajouter catégorie</a>
+                            <a href="{{ route('categories.export') }}" class="text-white">
+                                <div class="mr-2 d-flex align-items-center btn btn-danger btn-s">
+                                    <i class="fas fa-download"></i> <span class="ml-2">Exporter</span>
+                                </div>
+                            </a>
+                            <a href="{{ Route('category.create') }}" class="text-white">
+                                <div class="mr-2 d-flex align-items-center btn btn-primary btn-s">
+                                        <i class="fas fa-plus"></i><span class="ml-2">Ajouter catégorie</span>
+                                </div>
+                            </a>
                         </ol>
                     </div>
                 </div>
