@@ -45,7 +45,7 @@
                     </div>
                     <h4>created at : </h4>
                     <p>{{ $user->created_at }}</p>
-                    
+
 
                 </div>
             </div>

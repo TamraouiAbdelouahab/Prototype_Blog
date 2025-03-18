@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5">
     <h2>Edit User Role & Permissions</h2>
-    
+
     <form action="{{ route('user.update', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -20,7 +20,7 @@
             <select name="role" id="role" class="form-select">
                 <option value="">Select Role</option>
                 @foreach($roles as $role)
-                    <option value="{{ $role->name }}" 
+                    <option value="{{ $role->name }}"
                        @selected($user->hasRole($role->name))>
                         {{ ucfirst($role->name) }}
                     </option>
@@ -35,10 +35,10 @@
                 @foreach($permissions as $permission)
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" 
-                                   type="checkbox" 
-                                   name="permissions[]" 
-                                   value="{{ $permission->name}}" 
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="permissions[]"
+                                   value="{{ $permission->name}}"
                                    id="permission_{{ $permission->id }}"
                                    {{ in_array($permission->id, $userPermissions) ||$user->hasRole('admin') ? 'checked' : '' }}>
                                  <label class="form-check-label" for="permission_{{ $permission->id }}">
